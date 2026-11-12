@@ -42,16 +42,17 @@ class MetricdefEntry(BaseModel):
     field_7: str | None = None  # 口径版本
 
 class DimensionEntry(BaseModel):
-    """分析维度明细结构。"""
+    """分析维度明细结构（层级关系/日期样例同时兼容历史文本与结构化数组）。"""
 
     field_0: str | None = None  # 维度编号
     field_1: str | None = None  # 维度名称
     field_2: str | None = None  # 数据来源表
     field_3: str | None = None  # 维度键列
-    field_4: str | None = None  # 层级关系
+    field_4: Any | None = None  # 层级关系：文本（历史）或结构化数组
     field_5: str | None = None  # 历史拉链策略
     field_6: str | None = None  # 刷新周期
     field_7: str | None = None  # 默认取值
+    field_8: Any | None = None  # 日期样例：文本（历史）或结构化数组
 
 class DatasourceEntry(BaseModel):
     """数据源配置明细结构。"""
@@ -186,14 +187,14 @@ class QualityEntry(BaseModel):
     field_7: str | None = None  # 阻断级别
 
 class DatamodelEntry(BaseModel):
-    """模型定义明细结构。"""
+    """模型定义明细结构（关联维度/度量列/分区字段同时兼容历史文本与结构化值）。"""
 
     field_0: str | None = None  # 模型编号
     field_1: str | None = None  # 模型名称
     field_2: str | None = None  # 事实表名
-    field_3: str | None = None  # 关联维度
-    field_4: str | None = None  # 度量列定义
-    field_5: str | None = None  # 分区字段
+    field_3: Any | None = None  # 关联维度：文本（历史）或结构化数组
+    field_4: Any | None = None  # 度量列定义：文本（历史）或结构化数组
+    field_5: Any | None = None  # 分区字段：文本（历史）或字符串数组
     field_6: str | None = None  # 增量键
     field_7: str | None = None  # 刷新周期
 

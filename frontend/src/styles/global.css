@@ -33,3 +33,35 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .link { border: none; background: none; color: var(--brand); cursor: pointer; padding: 0; }
 .page-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--muted); }
 .error-text { color: #b42318; }
+
+/* 结构化字段展示：历史文本与结构化徽标视觉分开 */
+.cell-empty { color: var(--muted); }
+.cell-legacy { color: #92400e; }
+.chip-stack { display: flex; flex-direction: column; gap: 4px; }
+.chip { display: inline-block; background: #eef4ff; border: 1px solid #c7d9fe; color: #1e4fa3; border-radius: 4px; padding: 2px 6px; font-size: 12px; white-space: nowrap; }
+.ref-tag { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 12px; white-space: nowrap; }
+.ref-ok { background: #ecfdf3; border: 1px solid #a6f4c5; color: #027a48; }
+.ref-warn { background: #fffaeb; border: 1px solid #fedf89; color: #b54708; }
+.ref-bad { background: #fef3f2; border: 1px solid #fda29b; color: #b42318; }
+.status-tag { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 12px; background: #f2f4f7; color: #475467; }
+.row-disabled { background: #fafafa; }
+.row-disabled .status-tag { background: #fef3f2; color: #b42318; }
+
+/* 登记/编辑弹窗与结构化编辑器 */
+.modal-mask { position: fixed; inset: 0; background: rgba(16, 24, 40, 0.45); display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; z-index: 50; overflow-y: auto; }
+.modal { background: #fff; border-radius: 10px; width: min(860px, 100%); box-shadow: 0 12px 32px rgba(16, 24, 40, 0.18); }
+.modal-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.modal-head h3 { margin: 0; font-size: 15px; }
+.modal-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; max-height: 62vh; overflow-y: auto; }
+.modal-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--border); }
+.form-field { display: flex; flex-direction: column; gap: 4px; }
+.form-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.required-mark { color: #b42318; font-style: normal; margin-left: 2px; }
+.form-field input, .form-field textarea, .form-field select { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; font-family: inherit; }
+.form-field textarea { resize: vertical; }
+.struct-editor { display: flex; flex-direction: column; gap: 6px; border: 1px dashed var(--border); border-radius: 8px; padding: 8px; background: #fafbfd; }
+.struct-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.struct-row input, .struct-row select { flex: 1 1 140px; min-width: 120px; }
+.btn.small { padding: 4px 10px; font-size: 12px; align-self: flex-start; }
+.link.danger { color: #b42318; }
+.filter-item select { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; }

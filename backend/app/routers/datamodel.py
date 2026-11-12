@@ -12,7 +12,6 @@ router = APIRouter(prefix="/api/datamodel", tags=["数据建模"])
 
 service = DatamodelService()
 
-LIST_FIELDS = ["模型编号", "模型名称", "事实表名", "关联维度", "度量列定义", "分区字段", "增量键", "刷新周期"]
 STATUSES = ["草稿", "待审核", "已生效", "已废弃"]
 
 
@@ -30,6 +29,14 @@ def list_entries(
     return PageResult(items=items, total=total, page=page, size=size)
 
 
+# 注意：/export 必须排在 /{entry_id} 之前，否则会被当成 entry_id 解析而报 422。
+@router.get("/export")
+def export_entries() -> dict[str, Any]:
+    """导出数据建模清单：与列表/详情同一读取出口，包含全部业务字段与引用解析结果。"""
+    items, total = service.list_entries(page=1, size=10000)
+    return {"module": "datamodel", "total": total, "items": items}
+
+
 @router.get("/{entry_id}", response_model=dict)
 def get_entry(entry_id: int) -> dict:
     """读取单条模型定义明细；不存在时给出可读的错误说明。"""
@@ -41,10 +48,10 @@ def get_entry(entry_id: int) -> dict:
 
 @router.post("", response_model=ActionResult)
 def create_entry(payload: EntryPayload) -> ActionResult:
-    """登记一条模型定义，缺字段时说明原因而不是静默丢弃。"""
-    entry, missing = service.create_entry(payload.values)
-    if missing:
-        return ActionResult(ok=False, message=f"缺少必填字段：{'、'.join(missing)}")
+    """登记一条模型定义，缺字段、非法类型或无效引用时整条拒绝并说明原因。"""
+    entry, problems = service.create_entry(payload.values)
+    if problems:
+        return ActionResult(ok=False, message="；".join(problems))
     return ActionResult(ok=True, message="模型定义已登记", entry=entry)
 
 
@@ -56,10 +63,3 @@ def run_action(entry_id: int, payload: EntryPayload) -> ActionResult:
     if entry is None:
         return ActionResult(ok=False, message=message)
     return ActionResult(ok=True, message=message, entry=entry)
-
-
-@router.get("/export")
-def export_entries() -> dict[str, Any]:
-    """导出数据建模清单：返回当前过滤条件下的全量数据。"""
-    items, total = service.list_entries(page=1, size=10000)
-    return {"module": "datamodel", "total": total, "items": items}
